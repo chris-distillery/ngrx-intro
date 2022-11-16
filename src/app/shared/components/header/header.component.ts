@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('Calle 1');
+    console.log('Distillery');
 
   }
 

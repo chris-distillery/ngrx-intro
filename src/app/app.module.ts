@@ -4,6 +4,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { itemsReducer } from './state/reducers/items.reducers';
 
 
 @NgModule({
@@ -14,7 +17,11 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({
+      estadoDeItems: itemsReducer
+    }),
+    StoreDevtoolsModule.instrument({ name: 'TEST' })
   ],
   providers: [],
   bootstrap: [AppComponent]
