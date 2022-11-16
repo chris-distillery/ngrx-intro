@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ShowCaseService } from '@modules/show-case/services/show-case.service';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { AppState } from '../../../../state/app.state';
+import { selectListItems } from '../../../../state/selectors/items.selectors';
 
 @Component({
   selector: 'app-ui-block-item',
@@ -8,13 +11,11 @@ import { Observable } from 'rxjs';
   styleUrls: ['./ui-block-item.component.scss'],
 })
 export class UiBlockItemComponent implements OnInit {
-  listData: any = [];
+  items$: Observable<any> = new Observable();
 
-  constructor(private showCase: ShowCaseService) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    /* this.showCase.getDataApi().subscribe((res) => {
-      this.listData = res;
-    }); */
+    this.items$ = this.store.select(selectListItems);
   }
 }

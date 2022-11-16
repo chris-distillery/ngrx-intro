@@ -3,7 +3,9 @@ import { ItemModel } from '@core/models/item.interface';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
-import { loadItems } from '../../../../state/actions/items.actions';
+import { loadedItems, loadItems } from '../../../../state/actions/items.actions';
+import { selectLoading } from '../../../../state/selectors/items.selectors';
+import { ShowCaseService } from '../../services/show-case.service';
 
 @Component({
   selector: 'app-show-case-page',
@@ -11,13 +13,18 @@ import { loadItems } from '../../../../state/actions/items.actions';
   styleUrls: ['./show-case-page.component.scss'],
 })
 export class ShowCasePageComponent implements OnInit {
-  listItems: ItemModel[] = [];
-  listItems$: Observable<any> = new Observable();
+  loading$: Observable<boolean> = new Observable();
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>, private showCaseService: ShowCaseService) {}
 
   ngOnInit(): void {
+    this.loading$ = this.store.select(selectLoading);
+
     this.store.dispatch(loadItems());
+
+    this.showCaseService.getDataApi().subscribe((res: ItemModel[]) => {
+      this.store.dispatch(loadedItems({items: res}));
+    })
   }
 
   loadData(): void {}
